@@ -8,4 +8,5 @@ public class Curso
   public DateTime FechaPublicacion { get; set; }
   public Precio PrecioPromocion { get; set; }
   public ICollection<Comentario> ComentarioLista { get; set; }
+  public ICollection<CursoInstructor> InstructorLink { get; set; }
 }
