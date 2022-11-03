@@ -1,3 +1,5 @@
+using Aplicacion.Cursos;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistencia;
 
@@ -9,6 +11,7 @@ builder.Services.AddDbContext<CursosOnlineContext>(opt =>
 {
   opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddMediatR(typeof(Consulta.Manejador).Assembly);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
