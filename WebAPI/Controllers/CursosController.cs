@@ -20,4 +20,9 @@ public class CursosController : ControllerBase
   {
     return await mediator.Send(new Consulta.ListaCursos());
   }
+  [HttpGet("{id}")]
+  public async Task<ActionResult<Curso>> Detalle(int id)
+  {
+    return await mediator.Send(new ConsultaId.CursoUnico { Id = id });
+  }
 }
