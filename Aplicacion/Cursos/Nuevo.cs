@@ -26,7 +26,7 @@ namespace Aplicacion.Cursos
         {
           Titulo = request.Titulo,
           Descripcion = request.Descripcion,
-          FechaPublicacion = request.FechaPublicacion,
+          FechaPublicacion = DateTime.Now,
         };
         _context.Curso.Add(curso);
         var valor = await _context.SaveChangesAsync();
