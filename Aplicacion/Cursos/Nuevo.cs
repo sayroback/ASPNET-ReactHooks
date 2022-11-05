@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Persistencia;
 
 namespace Aplicacion.Cursos
@@ -10,7 +11,7 @@ namespace Aplicacion.Cursos
     {
       public string Titulo { get; set; }
       public string Descripcion { get; set; }
-      public DateTime FechaPublicacion { get; set; }
+      public List<IFormFile> files { get; set; }
     }
 
     public class Manejador : IRequestHandler<Ejecuta>

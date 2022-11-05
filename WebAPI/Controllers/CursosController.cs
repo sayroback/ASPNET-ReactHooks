@@ -10,9 +10,11 @@ namespace WebAPI.Controllers;
 public class CursosController : ControllerBase
 {
   private readonly IMediator mediator;
-  public CursosController(IMediator _mediator)
+  private readonly IWebHostEnvironment _enviroment;
+  public CursosController(IMediator _mediator, IWebHostEnvironment env)
   {
     mediator = _mediator;
+    _enviroment = env;
   }
 
   [HttpGet]
@@ -25,9 +27,30 @@ public class CursosController : ControllerBase
   {
     return await mediator.Send(new ConsultaId.CursoUnico { Id = id });
   }
+
   [HttpPost]
-  public async Task<ActionResult<Unit>> Crear(Nuevo.Ejecuta data)
+  [Consumes("multipart/form-data")]
+  public async Task<IActionResult> OnPostUploadAsync([FromForm] Nuevo.Ejecuta data)
   {
-    return await mediator.Send(data);
+    long size = data.files.Sum(f => f.Length);
+
+    foreach (var formFile in data.files)
+    {
+      if (formFile.Length > 0)
+      {
+        var filePath = Path.Combine(_enviroment.ContentRootPath, "Uploads", formFile.FileName);
+
+        using (var stream = System.IO.File.Create(filePath))
+        {
+          await formFile.CopyToAsync(stream);
+        }
+      }
+    }
+    await mediator.Send(data);
+    // Process uploaded files
+    // Don't rely on or trust the FileName property without validation.
+
+    return Ok(new { count = data.files, size });
   }
+
 }
