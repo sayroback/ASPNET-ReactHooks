@@ -24,8 +24,8 @@ public class FilesController : ControllerBase
     {
       if (formFile.Length > 0)
       {
-        var filePath = Path.Combine(_enviroment.ContentRootPath, "Uploads", formFile.FileName);
-
+        string nombre = String.Format("{1:yyyyMMdd_hhmmssfff}{2}", Path.GetFileNameWithoutExtension(formFile.FileName), DateTime.Now, Path.GetExtension(formFile.FileName));
+        var filePath = Path.Combine(_enviroment.ContentRootPath, "Uploads", nombre);
         using (var stream = System.IO.File.Create(filePath))
         {
           await formFile.CopyToAsync(stream);
