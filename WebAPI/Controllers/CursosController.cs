@@ -9,26 +9,31 @@ namespace WebAPI.Controllers;
 [Route("[controller]")]
 public class CursosController : ControllerBase
 {
-  private readonly IMediator mediator;
-  public CursosController(IMediator _mediator)
+  private readonly IMediator _mediator;
+  public CursosController(IMediator mediator)
   {
-    mediator = _mediator;
+    _mediator = mediator;
   }
 
   [HttpGet]
   public async Task<ActionResult<List<Curso>>> Get()
   {
-    return await mediator.Send(new Consulta.ListaCursos());
+    return await _mediator.Send(new Consulta.ListaCursos());
   }
   [HttpGet("{id}")]
   public async Task<ActionResult<Curso>> Detalle(int id)
   {
-    return await mediator.Send(new ConsultaId.CursoUnico { Id = id });
+    return await _mediator.Send(new ConsultaId.CursoUnico { Id = id });
   }
   [HttpPost]
-  public async Task<ActionResult<Unit>> OnPostUploadAsync(Nuevo.Ejecuta data)
+  public async Task<ActionResult<Unit>> Crear(Nuevo.Ejecuta data)
   {
-    return await mediator.Send(data);
+    return await _mediator.Send(data);
   }
-
+  [HttpPut("{id}")]
+  public async Task<ActionResult<Unit>> Editar(int id, Editar.Ejecuta data)
+  {
+    data.CursoId = id;
+    return await _mediator.Send(data);
+  }
 }
