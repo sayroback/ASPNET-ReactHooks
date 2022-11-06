@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Persistencia;
 
 namespace Aplicacion.Cursos
@@ -12,7 +13,13 @@ namespace Aplicacion.Cursos
       public string Descripcion { get; set; }
       public DateTime? FechaPublicacion { get; set; }
     }
-
+    public class EjecutaValidacion : AbstractValidator<Ejecuta>
+    {
+      public EjecutaValidacion()
+      {
+        RuleFor(x => x.CursoId).NotEmpty();
+      }
+    }
     public class Manejador : IRequestHandler<Ejecuta>
     {
       private readonly CursosOnlineContext _context;
