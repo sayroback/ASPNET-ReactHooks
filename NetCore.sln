@@ -3,21 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dominio", "Dominio\Dominio.csproj", "{5D003DE8-E5A1-424E-A722-21EB448E71A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dominio", "Dominio\Dominio.csproj", "{5D003DE8-E5A1-424E-A722-21EB448E71A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aplicacion", "Aplicacion\Aplicacion.csproj", "{A75A12B8-D0D3-4291-A264-551B9517E631}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aplicacion", "Aplicacion\Aplicacion.csproj", "{A75A12B8-D0D3-4291-A264-551B9517E631}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistencia", "Persistencia\Persistencia.csproj", "{611E97EE-3671-4A9A-8EE4-9401B20B9823}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistencia", "Persistencia\Persistencia.csproj", "{611E97EE-3671-4A9A-8EE4-9401B20B9823}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{AA54BAA9-8DEC-4EFE-AF58-B5F0EF3FA89B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{AA54BAA9-8DEC-4EFE-AF58-B5F0EF3FA89B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{30E8E36E-5B2F-41E2-B876-DE4D5DE4CD60}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5D003DE8-E5A1-424E-A722-21EB448E71A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -36,5 +39,11 @@ Global
 		{AA54BAA9-8DEC-4EFE-AF58-B5F0EF3FA89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA54BAA9-8DEC-4EFE-AF58-B5F0EF3FA89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA54BAA9-8DEC-4EFE-AF58-B5F0EF3FA89B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {051B58BD-1876-4995-9CF9-26AE0CACA369}
 	EndGlobalSection
 EndGlobal

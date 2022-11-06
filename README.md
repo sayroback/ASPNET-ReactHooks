@@ -2,6 +2,8 @@
 
 # DotNet
 
+Los archivos que recibe la API se guardan en una carpeta "\WebAPI\Uploads\", es ignorada por Git, de debe crear manualmente.
+
 ## Comandos DotNet
 
 Crear una nueva solución:
@@ -34,4 +36,16 @@ Debes posicionarte desde la terminal a la carpeta del proyecto al que agregaras 
 
 ```csharp
 dotnet add reference ../Proyecto/
+```
+
+Restaurar bibliotecas del proyecto.
+
+```csharp
+dotnet restore
+```
+
+Compilar el proyecto.
+
+```csharp
+dotnet build
 ```
