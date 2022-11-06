@@ -26,7 +26,6 @@ public class CursosController : ControllerBase
     return await mediator.Send(new ConsultaId.CursoUnico { Id = id });
   }
   [HttpPost]
-  [Consumes("multipart/form-data")]
   public async Task<ActionResult<Unit>> OnPostUploadAsync(Nuevo.Ejecuta data)
   {
     return await mediator.Send(data);

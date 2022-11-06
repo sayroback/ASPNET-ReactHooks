@@ -1,5 +1,8 @@
-﻿using MediatR;
+﻿using Aplicacion.Files;
+using Dominio;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Persistencia;
 
 namespace WebAPI.Controllers;
 
@@ -9,33 +12,47 @@ public class FilesController : ControllerBase
 {
   private readonly IMediator mediator;
   private readonly IWebHostEnvironment _enviroment;
-  public FilesController(IMediator _mediator, IWebHostEnvironment env)
+  private readonly CursosOnlineContext _context;
+  public FilesController(IMediator _mediator, IWebHostEnvironment env, CursosOnlineContext context)
   {
+    _context = context;
     mediator = _mediator;
     _enviroment = env;
   }
 
   [HttpPost]
-  public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files)
+  public async Task<ActionResult<Unit>> OnPostUploadAsync([FromForm] NewMultipart.FormData data)
   {
-    long size = files.Sum(f => f.Length);
-
-    foreach (var formFile in files)
+    var formData = new Directorio
     {
-      if (formFile.Length > 0)
+      DirectorioId = data.idDirectorio,
+      Nombre = data.Nombre,
+    };
+    _context.Directorios.Add(formData);
+    var valor = await _context.SaveChangesAsync();
+    if (valor > 0)
+    {
+      List<string> paths = new List<string>();
+      long size = data.files.Sum(f => f.Length);
+      foreach (var formFile in data.files)
       {
-        string nombre = String.Format("{1:yyyyMMdd_hhmmssfff}{2}", Path.GetFileNameWithoutExtension(formFile.FileName), DateTime.Now, Path.GetExtension(formFile.FileName));
-        var filePath = Path.Combine(_enviroment.ContentRootPath, "Uploads", nombre);
-        using (var stream = System.IO.File.Create(filePath))
+        if (formFile.Length > 0)
         {
-          await formFile.CopyToAsync(stream);
+          string nombre = String.Format("{1:yyyyMMdd_hhmmssfff}{2}", Path.GetFileNameWithoutExtension(formFile.FileName), DateTime.Now, Path.GetExtension(formFile.FileName));
+          var filePath = Path.Combine(_enviroment.ContentRootPath, "Uploads", nombre);
+          using (var stream = System.IO.File.Create(filePath))
+          {
+            await formFile.CopyToAsync(stream);
+          }
+          string directoryName = Path.GetFullPath(filePath);
+          paths.Add(directoryName);
+          data.ImageURL = directoryName;
+          await mediator.Send(data);
         }
+
       }
+      return Ok(new { path = paths });
     }
-
-    // Process uploaded files
-    // Don't rely on or trust the FileName property without validation.
-
-    return Ok(new { count = files.Count, size });
+    return BadRequest();
   }
 }
