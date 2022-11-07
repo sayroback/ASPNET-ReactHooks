@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using Aplicacion.ManejadorError;
 using MediatR;
 using Persistencia;
+using System.Net;
 
 namespace Aplicacion.Cursos
 {
@@ -12,13 +13,6 @@ namespace Aplicacion.Cursos
       public string Titulo { get; set; }
       public string Descripcion { get; set; }
       public DateTime? FechaPublicacion { get; set; }
-    }
-    public class EjecutaValidacion : AbstractValidator<Ejecuta>
-    {
-      public EjecutaValidacion()
-      {
-        RuleFor(x => x.CursoId).NotEmpty();
-      }
     }
     public class Manejador : IRequestHandler<Ejecuta>
     {
@@ -33,7 +27,8 @@ namespace Aplicacion.Cursos
         var curso = await _context.Curso.FindAsync(request.CursoId);
         if (curso == null)
         {
-          throw new Exception("El curso no existe");
+          // throw new Exception("No se encontró el curso");
+          throw new ManejadorExcepcion(HttpStatusCode.NotFound, new { mensaje = "No se encontró el curso" });
         }
         curso.Titulo = request.Titulo ?? curso.Titulo;
         curso.Descripcion = request.Descripcion ?? curso.Descripcion;
