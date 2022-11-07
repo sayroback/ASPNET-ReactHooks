@@ -1,5 +1,7 @@
-﻿using MediatR;
+﻿using Aplicacion.ManejadorError;
+using MediatR;
 using Persistencia;
+using System.Net;
 
 namespace Aplicacion.Cursos
 {
@@ -22,7 +24,8 @@ namespace Aplicacion.Cursos
         var curso = await _context.Curso.FindAsync(request.Id);
         if (curso == null)
         {
-          throw new Exception("No se encontró el curso");
+          // throw new Exception("No se encontró el curso");
+          throw new ManejadorExcepcion(HttpStatusCode.NotFound, new { mensaje = "No se encontró el curso" });
         }
         _context.Remove(curso);
         var resultado = await _context.SaveChangesAsync();

@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistencia;
+using WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +28,10 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<ManejadorErrorMiddleware>();
 if (app.Environment.IsDevelopment())
 {
+  // app.UseDeveloperExceptionPage();
   app.UseSwagger();
   app.UseSwaggerUI();
 }
