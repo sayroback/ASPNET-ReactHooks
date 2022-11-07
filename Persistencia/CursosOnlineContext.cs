@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Dominio.Files;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistencia;

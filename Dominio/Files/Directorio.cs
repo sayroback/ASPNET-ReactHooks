@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Dominio
+namespace Dominio.Files
 {
   public class Directorio
   {

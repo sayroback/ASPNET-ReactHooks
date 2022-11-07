@@ -1,4 +1,4 @@
-﻿using Dominio;
+﻿using Dominio.Files;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Persistencia;
