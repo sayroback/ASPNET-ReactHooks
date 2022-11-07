@@ -15,6 +15,7 @@ public class CursosOnlineContext : DbContext
   public DbSet<Comentario> Comentario { get; set; }
   public DbSet<Instructor> Instructor { get; set; }
   public DbSet<CursoInstructor> CursoInstructor { get; set; }
+  // tablas para los archivos.
   public DbSet<Directorio> Directorios { get; set; }
   public DbSet<Multipart> Multiparts { get; set; }
   protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,22 +25,6 @@ public class CursosOnlineContext : DbContext
       c1.CursoId,
       c1.InstructorId
     });
-    modelBuilder.Entity<Multipart>()
-    .HasOne<Directorio>(s => s.Directorio)
-    .WithMany(g => g.Multiparts)
-    .HasForeignKey(s => s.CurrentDirectorioId);
-
-    modelBuilder.Entity<Directorio>()
-       .HasMany<Multipart>(g => g.Multiparts)
-       .WithOne(s => s.Directorio)
-       .HasForeignKey(s => s.CurrentDirectorioId); ;
   }
-
-  //private const string connectionString = @"";
-  //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  //{
-  //  optionsBuilder.UseSqlServer(connectionString);
-  //}
-
 }
 

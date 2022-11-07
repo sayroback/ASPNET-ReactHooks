@@ -99,21 +99,20 @@ namespace Persistencia.Migrations
                 name: "Multiparts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    MultipartId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Segmento = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CurrentDirectorioId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Segmento = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageURL = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    idDirectorio = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Multiparts", x => x.Id);
+                    table.PrimaryKey("PK_Multiparts", x => x.MultipartId);
                     table.ForeignKey(
-                        name: "FK_Multiparts_Directorios_CurrentDirectorioId",
-                        column: x => x.CurrentDirectorioId,
+                        name: "FK_Multiparts_Directorios_idDirectorio",
+                        column: x => x.idDirectorio,
                         principalTable: "Directorios",
-                        principalColumn: "DirectorioId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "DirectorioId");
                 });
 
             migrationBuilder.CreateTable(
@@ -151,9 +150,9 @@ namespace Persistencia.Migrations
                 column: "InstructorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Multiparts_CurrentDirectorioId",
+                name: "IX_Multiparts_idDirectorio",
                 table: "Multiparts",
-                column: "CurrentDirectorioId");
+                column: "idDirectorio");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Precio_CursoId",

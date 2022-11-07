@@ -1,14 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dominio.Files
 {
   public class Multipart
   {
-    [Key]
-    public int Id { get; set; }
-    public string Segmento { get; set; }
-    public string ImageURL { get; set; }
-    public string CurrentDirectorioId { get; set; }
-    public Directorio Directorio { get; set; }
+    public int MultipartId { get; set; }
+    public string? Segmento { get; set; }
+    public string? ImageURL { get; set; }
+    public string? idDirectorio { get; set; }
+    [ForeignKey("idDirectorio")]
+    public Directorio? Directorio { get; set; }
   }
 }

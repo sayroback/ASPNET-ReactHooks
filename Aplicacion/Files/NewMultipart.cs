@@ -1,8 +1,10 @@
-﻿using Dominio.Files;
+﻿using Aplicacion.ManejadorError;
+using Dominio.Files;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistencia;
-
+using System.Net;
 
 namespace Aplicacion.Files
 {
@@ -10,10 +12,10 @@ namespace Aplicacion.Files
   {
     public class FormData : IRequest
     {
-      public string idDirectorio { get; set; }
+      public string DirectorioId { get; set; }
       public string Nombre { get; set; }
       public string Segmento { get; set; }
-      public string? ImageURL { get; set; }
+      public string ImageURL { get; set; }
       public List<IFormFile> files { get; set; }
     }
     public class Manejador : IRequestHandler<FormData>
@@ -25,21 +27,29 @@ namespace Aplicacion.Files
       }
       public async Task<Unit> Handle(FormData request, CancellationToken cancellationToken)
       {
-        var dir = new Directorio
+        var directorio = await _context.Directorios.FirstOrDefaultAsync(x => x.DirectorioId == request.DirectorioId);
+        while (directorio == null)
         {
-          DirectorioId = request.idDirectorio,
-          Nombre = request.Nombre
+          var dir = new Directorio
+          {
+            DirectorioId = request.DirectorioId,
+            Nombre = request.Nombre
+          };
+          _context.Directorios.Add(dir);
+          var dirResult = await _context.SaveChangesAsync();
+          if (dirResult == 0)
+          {
+            throw new ManejadorExcepcion(HttpStatusCode.NotFound, new { mensaje = "no se registro directorio" });
+          }
+          directorio = await _context.Directorios.FirstOrDefaultAsync(x => x.DirectorioId == request.DirectorioId);
         };
-        _context.Directorios.Add(dir);
-        var dirResult = await _context.SaveChangesAsync();
-
-        if (dirResult > 0)
+        if (directorio != null)
         {
           var formData = new Multipart
           {
             Segmento = request.Segmento,
             ImageURL = request.ImageURL,
-            CurrentDirectorioId = request.idDirectorio
+            idDirectorio = request.DirectorioId
           };
           _context.Multiparts.Add(formData);
           var valor = await _context.SaveChangesAsync();
@@ -47,8 +57,9 @@ namespace Aplicacion.Files
           {
             return Unit.Value;
           }
+          throw new ManejadorExcepcion(HttpStatusCode.NotFound, new { mensaje = "no se registro el multipart" });
         }
-        throw new Exception("No se pudo insertar el curso");
+        throw new ManejadorExcepcion(HttpStatusCode.NotFound, new { mensaje = "no se registro el multipart" });
       }
     }
   }

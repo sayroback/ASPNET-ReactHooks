@@ -12,7 +12,7 @@ using Persistencia;
 namespace Persistencia.Migrations
 {
     [DbContext(typeof(CursosOnlineContext))]
-    [Migration("20221105134634_InitDB")]
+    [Migration("20221107025222_InitDB")]
     partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,7 @@ namespace Persistencia.Migrations
                     b.ToTable("CursoInstructor");
                 });
 
-            modelBuilder.Entity("Dominio.Directorio", b =>
+            modelBuilder.Entity("Dominio.Files.Directorio", b =>
                 {
                     b.Property<string>("DirectorioId")
                         .HasColumnType("nvarchar(450)");
@@ -104,6 +104,30 @@ namespace Persistencia.Migrations
                     b.HasKey("DirectorioId");
 
                     b.ToTable("Directorios");
+                });
+
+            modelBuilder.Entity("Dominio.Files.Multipart", b =>
+                {
+                    b.Property<int>("MultipartId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MultipartId"), 1L, 1);
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Segmento")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("idDirectorio")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("MultipartId");
+
+                    b.HasIndex("idDirectorio");
+
+                    b.ToTable("Multiparts");
                 });
 
             modelBuilder.Entity("Dominio.Instructor", b =>
@@ -133,33 +157,6 @@ namespace Persistencia.Migrations
                     b.HasKey("InstructorId");
 
                     b.ToTable("Instructor");
-                });
-
-            modelBuilder.Entity("Dominio.Multipart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CurrentDirectorioId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ImageURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Segmento")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CurrentDirectorioId");
-
-                    b.ToTable("Multiparts");
                 });
 
             modelBuilder.Entity("Dominio.Precio", b =>
@@ -217,13 +214,11 @@ namespace Persistencia.Migrations
                     b.Navigation("Instructor");
                 });
 
-            modelBuilder.Entity("Dominio.Multipart", b =>
+            modelBuilder.Entity("Dominio.Files.Multipart", b =>
                 {
-                    b.HasOne("Dominio.Directorio", "Directorio")
+                    b.HasOne("Dominio.Files.Directorio", "Directorio")
                         .WithMany("Multiparts")
-                        .HasForeignKey("CurrentDirectorioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("idDirectorio");
 
                     b.Navigation("Directorio");
                 });
@@ -249,7 +244,7 @@ namespace Persistencia.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Dominio.Directorio", b =>
+            modelBuilder.Entity("Dominio.Files.Directorio", b =>
                 {
                     b.Navigation("Multiparts");
                 });
