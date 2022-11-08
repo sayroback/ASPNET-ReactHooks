@@ -5,9 +5,17 @@ using Microsoft.EntityFrameworkCore;
 using Persistencia;
 using WebAPI.Middleware;
 
+var _MyCors = "_MyCors";
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+  options.AddPolicy(name: _MyCors, builder =>
+  {
+    builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost").AllowAnyHeader().AllowAnyMethod();
+  });
+});
 
 builder.Services.AddDbContext<CursosOnlineContext>(opt =>
 {
@@ -31,6 +39,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(_MyCors);
 
 app.UseAuthorization();
 

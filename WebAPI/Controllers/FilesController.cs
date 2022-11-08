@@ -23,8 +23,9 @@ public class FilesController : ControllerBase
   public async Task<ActionResult<Unit>> OnPostUploadAsync([FromForm] NewMultipart.FormData data)
   {
     List<string> paths = new List<string>();
-    long size = data.files.Sum(f => f.Length);
-    foreach (var formFile in data.files)
+    long size = data.ImgSeg.files.Sum(f => f.Length);
+    int index = 0;
+    foreach (var formFile in data.ImgSeg.files)
     {
       if (formFile.Length > 0)
       {
@@ -37,9 +38,12 @@ public class FilesController : ControllerBase
         string directoryName = Path.GetFullPath(filePath);
         paths.Add(directoryName);
         data.ImageURL = directoryName;
+        data.indexImg = index;
         await _mediator.Send(data);
       }
+      index++;
     }
+
     return Ok();
   }
 }
