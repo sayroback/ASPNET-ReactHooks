@@ -2,6 +2,7 @@ using Aplicacion.Cursos;
 using Dominio;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistencia;
 using WebAPI.Middleware;
@@ -24,7 +25,13 @@ builder.Services.AddDbContext<CursosOnlineContext>(opt =>
 });
 builder.Services.AddMediatR(typeof(Consulta.Manejador).Assembly);
 builder.Services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
-builder.Services.AddIdentityCore<Usuario>();
+
+// Identity
+var identityBuilder = builder.Services.AddIdentityCore<Usuario>();
+var identityBuilderServices = new IdentityBuilder(identityBuilder.UserType, identityBuilder.Services);
+identityBuilderServices.AddEntityFrameworkStores<CursosOnlineContext>();
+identityBuilderServices.AddSignInManager<SignInManager<Usuario>>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
