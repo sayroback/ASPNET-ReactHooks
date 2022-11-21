@@ -1,9 +1,12 @@
 using Aplicacion.Cursos;
 using Dominio;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Persistencia;
 using WebAPI.Middleware;
 
@@ -24,19 +27,43 @@ builder.Services.AddDbContext<CursosOnlineContext>(opt =>
   opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddMediatR(typeof(Consulta.Manejador).Assembly);
-builder.Services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
+builder.Services.AddControllers();
 
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<Nuevo>();
+
+// Servicio Identity
 // Identity
 var identityBuilder = builder.Services.AddIdentityCore<Usuario>();
 var identityBuilderServices = new IdentityBuilder(identityBuilder.UserType, identityBuilder.Services);
 identityBuilderServices.AddEntityFrameworkStores<CursosOnlineContext>();
 identityBuilderServices.AddSignInManager<SignInManager<Usuario>>();
+builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+  var services = scope.ServiceProvider;
+  try
+  {
+    var userManager = services.GetRequiredService<UserManager<Usuario>>();
+    var context = scope.ServiceProvider.GetRequiredService<CursosOnlineContext>();
+    context.Database.Migrate();
+    DataPrueba.InsertarData(context, userManager).Wait();
+  }
+  catch (Exception e)
+  {
+    var logging = services.GetRequiredService<ILogger<Program>>();
+    logging.LogError(e, "Ocurrió un error en la migración");
+  }
+}
 
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ManejadorErrorMiddleware>();
@@ -51,7 +78,10 @@ app.UseHttpsRedirection();
 
 app.UseCors(_MyCors);
 
+//Agregar autenticación
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

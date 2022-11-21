@@ -10,7 +10,7 @@ public class ConsultaId
 {
   public class CursoUnico : IRequest<Curso>
   {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
   }
   public class Manejador : IRequestHandler<CursoUnico, Curso>
   {
