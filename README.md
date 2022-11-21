@@ -6,7 +6,7 @@ Los archivos que recibe la API se guardan en una carpeta "\WebAPI\Uploads\", es 
 
 ## Comandos DotNet
 
-Crear una nueva soluciÛn:
+Crear una nueva soluci√≥n:
 
 ```csharp
 dotnet new sln
@@ -24,13 +24,13 @@ Crear templete WebApi ASP:
 dotnet new webapi -o NombreWebAPI
 ```
 
-Agregar proyectos a la soluciÛn:
+Agregar proyectos a la soluci√≥n:
 
 ```csharp
 dotnet sln add Proyecto/
 ```
 
-Agregar referencias de un proyecto a otro. 
+Agregar referencias de un proyecto a otro.
 
 Debes posicionarte desde la terminal a la carpeta del proyecto al que agregaras las referencias:
 
@@ -48,4 +48,22 @@ Compilar el proyecto.
 
 ```csharp
 dotnet build
+```
+
+Instalar dotnet tool
+
+```csharp
+dotnet tool install --global dotnet-ef
+```
+
+Actualizar dotnet tool
+
+```csharp
+dotnet tool install --global dotnet-ef
+```
+
+Crear migraci√≥n
+
+```csharp
+dotnet ef migrations add IdentifyCoreInicial -p Persistencia/ -s WebAPI/
 ```
