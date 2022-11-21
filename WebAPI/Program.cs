@@ -29,10 +29,10 @@ builder.Services.AddDbContext<CursosOnlineContext>(opt =>
 builder.Services.AddMediatR(typeof(Consulta.Manejador).Assembly);
 builder.Services.AddControllers();
 
+// Fluent Validation
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<Nuevo>();
 
-// Servicio Identity
 // Identity
 var identityBuilder = builder.Services.AddIdentityCore<Usuario>();
 var identityBuilderServices = new IdentityBuilder(identityBuilder.UserType, identityBuilder.Services);
