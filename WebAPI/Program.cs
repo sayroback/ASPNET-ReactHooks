@@ -1,3 +1,4 @@
+using Aplicacion.Contratos;
 using Aplicacion.Cursos;
 using Dominio;
 using FluentValidation;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Persistencia;
+using Seguridad.TokenSeguridad;
 using WebAPI.Middleware;
 
 var _MyCors = "_MyCors";
@@ -39,6 +41,8 @@ var identityBuilderServices = new IdentityBuilder(identityBuilder.UserType, iden
 identityBuilderServices.AddEntityFrameworkStores<CursosOnlineContext>();
 identityBuilderServices.AddSignInManager<SignInManager<Usuario>>();
 builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
+builder.Services.AddScoped<IJwtGenerador, JwtGenerador>();
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

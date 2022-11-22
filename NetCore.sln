@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Seguridad", "Seguridad\Seguridad.csproj", "{B6101A55-0478-42B1-8734-DA9D8146EC5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{AA54BAA9-8DEC-4EFE-AF58-B5F0EF3FA89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA54BAA9-8DEC-4EFE-AF58-B5F0EF3FA89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA54BAA9-8DEC-4EFE-AF58-B5F0EF3FA89B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6101A55-0478-42B1-8734-DA9D8146EC5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6101A55-0478-42B1-8734-DA9D8146EC5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6101A55-0478-42B1-8734-DA9D8146EC5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6101A55-0478-42B1-8734-DA9D8146EC5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
