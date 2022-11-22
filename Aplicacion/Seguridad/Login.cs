@@ -1,4 +1,5 @@
-﻿using Aplicacion.ManejadorError;
+﻿using Aplicacion.Contratos;
+using Aplicacion.ManejadorError;
 using Dominio;
 using FluentValidation;
 using MediatR;
@@ -26,10 +27,12 @@ public class Login
   {
     private readonly UserManager<Usuario> _userManager;
     private readonly SignInManager<Usuario> _signInManager;
-    public Manejador(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager)
+    private readonly IJwtGenerador _jwtGenerador;
+    public Manejador(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, IJwtGenerador jwtGenerador)
     {
       _userManager = userManager;
       _signInManager = signInManager;
+      _jwtGenerador = jwtGenerador;
     }
     public async Task<UsuarioData> Handle(Ejecuta request, CancellationToken cancellationToken)
     {
@@ -44,7 +47,7 @@ public class Login
         return new UsuarioData
         {
           NombreCompleto = usuario.NombreCompleto,
-          Token = "Token del usuario",
+          Token = _jwtGenerador.CrearToken(usuario),
           UserName = usuario.UserName,
           Email = usuario.Email,
           Imagen = null

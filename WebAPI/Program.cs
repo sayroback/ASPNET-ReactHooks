@@ -5,11 +5,14 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 using Persistencia;
 using Seguridad.TokenSeguridad;
+using System.Text;
 using WebAPI.Middleware;
 
 var _MyCors = "_MyCors";
@@ -43,12 +46,19 @@ identityBuilderServices.AddSignInManager<SignInManager<Usuario>>();
 builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
 builder.Services.AddScoped<IJwtGenerador, JwtGenerador>();
 
+var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Palabra Secreta 3242 zxc"));
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => opt.TokenValidationParameters = new TokenValidationParameters
+{
+  ValidateIssuerSigningKey = true,
+  IssuerSigningKey = key,
+  ValidateAudience = false,
+  ValidateIssuer = false,
+});
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
 
 var app = builder.Build();
 
@@ -85,7 +95,6 @@ app.UseCors(_MyCors);
 //Agregar autenticación
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.MapControllers();
 

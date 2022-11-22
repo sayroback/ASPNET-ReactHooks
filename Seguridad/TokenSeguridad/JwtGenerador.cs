@@ -9,7 +9,7 @@ using System.Text;
 namespace Seguridad.TokenSeguridad;
 public class JwtGenerador : IJwtGenerador
 {
-  public string GenerateToken(Usuario usuario)
+  public string CrearToken(Usuario usuario)
   {
     var claims = new List<Claim>
     {
