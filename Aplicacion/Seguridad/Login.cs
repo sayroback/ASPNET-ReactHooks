@@ -28,7 +28,8 @@ public class Login
     private readonly UserManager<Usuario> _userManager;
     private readonly SignInManager<Usuario> _signInManager;
     private readonly IJwtGenerador _jwtGenerador;
-    public Manejador(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, IJwtGenerador jwtGenerador)
+    public Manejador(UserManager<Usuario> userManager, 
+      SignInManager<Usuario> signInManager, IJwtGenerador jwtGenerador)
     {
       _userManager = userManager;
       _signInManager = signInManager;

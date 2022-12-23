@@ -46,6 +46,7 @@ identityBuilderServices.AddSignInManager<SignInManager<Usuario>>();
 builder.Services.TryAddSingleton<ISystemClock, SystemClock>();
 builder.Services.AddScoped<IJwtGenerador, JwtGenerador>();
 
+
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Palabra Secreta 3242 zxc"));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt => opt.TokenValidationParameters = new TokenValidationParameters
 {

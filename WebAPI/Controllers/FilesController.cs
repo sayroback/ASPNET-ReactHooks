@@ -30,11 +30,23 @@ public class FilesController : ControllerBase
       if (formFile.Length > 0)
       {
         string nombre = String.Format("{1:yyyyMMdd_hhmmssfff}{2}", Path.GetFileNameWithoutExtension(formFile.FileName), DateTime.Now, Path.GetExtension(formFile.FileName));
+        string pathLocal = "~/Uploads";
+        Directory.CreateDirectory(pathLocal);
+
+        Stream fs = formFile.OpenReadStream();
+        BinaryReader br = new BinaryReader(fs);
+        byte[] bytes = br.ReadBytes((Int32)fs.Length);
+
+
         var filePath = Path.Combine(_enviroment.ContentRootPath, "Uploads", nombre);
-        using (var stream = System.IO.File.Create(filePath))
+        using (var stream = new System.IO.FileStream(filePath, FileMode.Create))
         {
           await formFile.CopyToAsync(stream);
         }
+
+
+
+        System.IO.File.Delete(filePath);
         string directoryName = Path.GetFullPath(filePath);
         paths.Add(directoryName);
         data.ImageURL = directoryName;
